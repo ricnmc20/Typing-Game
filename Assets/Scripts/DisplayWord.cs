@@ -7,9 +7,13 @@ public class DisplayWord : MonoBehaviour
     private TMP_Text text;
     private SlicedMesh backgroundMesh;
     private int typedIndex = 0;
+    private WordManager manager;
 
-    void Start()
+    public void Setup(string word, WordManager manager)
     {
+        this.word = word;
+        this.manager = manager;
+
         text = GetComponent<TMP_Text>();
         text.autoSizeTextContainer = true;
         text.text = word;
@@ -23,10 +27,6 @@ public class DisplayWord : MonoBehaviour
 
     void Update()
     {
-        foreach (char character in Input.inputString)
-        {
-            Type(character);
-        }
     }
 
     public void Type(char character)
@@ -37,9 +37,14 @@ public class DisplayWord : MonoBehaviour
         }
         else
         {
-            Debug.Log("Wrong character " + character);
+            manager.TypingError(character);
         }
 
         text.text = "<color=#f0f>" + word.Substring(0, typedIndex) + "</color>" + word.Substring(typedIndex);
+
+        if(typedIndex == word.Length)
+        {
+            manager.DisposeWord();
+        }
     }
 }
