@@ -68,8 +68,6 @@ public class WordManager : MonoBehaviour
             displayWord.GetComponent<DisplayWord>().Setup(word, this);
 
             displayWords.Add(character, displayWord);
-
-            Debug.Log(word);
         }
         else
         {
@@ -122,7 +120,13 @@ public class WordManager : MonoBehaviour
     {
         currentWord = null;
         EnableCharacter(currentWordCharacter);
-        Destroy(displayWords[currentWordCharacter]);
+        StartCoroutine(DestroyWord(displayWords[currentWordCharacter]));
         displayWords.Remove(currentWordCharacter);
+    }
+
+    IEnumerator DestroyWord(GameObject wordObject)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Destroy(wordObject);
     }
 }
